@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Note;
 use Illuminate\Http\Request;
 
 class NoteController extends Controller
@@ -11,7 +12,8 @@ class NoteController extends Controller
      */
     public function index()
     {
-        //
+        $notes = Note::all();
+        return view('notes.index', compact('notes'));
     }
 
     /**
@@ -19,7 +21,7 @@ class NoteController extends Controller
      */
     public function create()
     {
-        //
+        return view('notes.create');
     }
 
     /**
@@ -27,15 +29,22 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'titulo' => 'required',
+            'contenido'=> 'required',
+        ]);
+
+        Note::create($request->all());
+        return redirect()->route('notes.index')->with('sucess', 'Nota creada.');
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Note $note)
     {
-        //
+        return view('notes.show', compact('note'));
     }
 
     /**
@@ -43,22 +52,30 @@ class NoteController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('notes.edit', compact('note'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Note $note)
     {
-        //
+        $request->validate([
+            'titulo'=> 'required',
+            'contenido'=> 'required',
+        ]);
+
+
+        $note->update($request->all());
+        return redirect()->route('notes.index')->with('sucess', 'Nota actualizada');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Note $note)
     {
-        //
+        $note->delete();
+        return redirect()->route('notes.index')->with('success', 'Nota eliminada');
     }
 }
