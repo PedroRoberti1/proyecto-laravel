@@ -30,8 +30,8 @@ class NoteController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'titulo' => 'required',
-            'contenido'=> 'required',
+            'Titulo' => 'required',
+            'Contenido'=> 'required',
         ]);
 
         Note::create($request->all());
@@ -50,7 +50,7 @@ class NoteController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Note $note)
     {
         return view('notes.edit', compact('note'));
     }
@@ -61,8 +61,8 @@ class NoteController extends Controller
     public function update(Request $request, Note $note)
     {
         $request->validate([
-            'titulo'=> 'required',
-            'contenido'=> 'required',
+            'Titulo'=> 'required',
+            'Contenido'=> 'required',
         ]);
 
 
